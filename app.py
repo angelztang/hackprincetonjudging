@@ -19,7 +19,10 @@ app = Flask(__name__, static_folder='static', static_url_path='')
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL or 'postgresql://postgres:postgres@localhost:5432/judging'
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+else:
+    # Use SQLite for local development
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///judging.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
